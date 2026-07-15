@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-slate-900 text-slate-100">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contract Law Interactive Quiz Slides</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Inter Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #1e293b;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #475569;
+      border-radius: 3px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #64748b;
+    }
+  </style>
+</head>
+<body class="h-full flex flex-col justify-between overflow-hidden selection:bg-indigo-500 selection:text-white">
+
+  <!-- Header Banner -->
+  <header class="border-b border-slate-800 bg-slate-950 px-6 py-4 flex items-center justify-between z-10">
+    <div class="flex items-center space-x-3">
+      <div class="bg-indigo-600 text-white p-2 rounded-lg font-bold text-xl tracking-wider">L</div>
+      <div>
+        <h1 class="text-sm font-bold tracking-wider text-indigo-400 uppercase">Interactive Classroom</h1>
+        <p class="text-xs text-slate-400">Contracts Act 1950 & Common Law Series</p>
+      </div>
+    </div>
+    <div class="flex items-center space-x-4">
+      <button onclick="toggleAudio()" id="audioBtn" class="text-slate-400 hover:text-slate-200 transition-colors p-2 rounded-lg bg-slate-900 border border-slate-800" title="Toggle Sound FX">
+        <svg id="audioIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        </svg>
+      </button>
+      <span class="text-xs bg-slate-800 border border-slate-700 px-3 py-1.5 rounded-full text-slate-300 font-medium">Revision Pack v2.6</span>
+    </div>
+  </header>
+
+  <!-- Main Workspace / Slide Deck Frame -->
+  <main class="flex-1 flex flex-col items-center justify-center p-6 relative overflow-y-auto">
+    
+    <!-- Welcome Slide -->
+    <section id="welcomeSlide" class="w-full max-w-4xl bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl p-8 md:p-12 transition-all duration-500 transform scale-100 flex flex-col justify-between">
+      <div>
+        <span class="text-xs font-semibold text-indigo-400 bg-indigo-950 border border-indigo-900 px-3 py-1 rounded-full uppercase tracking-widest">Masterclass Series</span>
+        <h2 class="text-3xl md:text-5xl font-black mt-4 leading-tight">Contract Law<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400">Interactive Quiz Deck</span></h2>
+        <p class="text-slate-400 text-sm md:text-base mt-4 max-w-2xl">
+          Test your mastery across 6 key modules covering the Malaysian Contracts Act 1950 and classical common law precedents. Complete scenarios, identify landmark case rulings, and track your analytical metrics.
+        </p>
+
+        <!-- Chapter Selector grid -->
+        <div class="mt-8">
+          <label class="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-3">Filter / Focus Study Chapter</label>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="chapterSelectorGrid">
+            <!-- Dynamic Buttons loaded via JS -->
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-10 border-t border-slate-800 pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="text-xs text-slate-500">
+          *Sound synthesis is enabled by default to reward positive streaks.
+        </div>
+        <button onclick="startQuiz()" class="w-full md:w-auto bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold px-8 py-3.5 rounded-xl shadow-lg transition-all duration-200 transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2 text-base">
+          Launch Practice Slides
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Quiz Presentation Cards -->
+    <section id="quizSlide" class="hidden w-full max-w-4xl bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl p-6 md:p-8 transition-all duration-500 transform translate-y-4 opacity-0 flex flex-col justify-between">
+      
+      <!-- Slide Metadata Header -->
+      <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+        <div class="flex items-center space-x-3">
+          <span id="chapterBadge" class="text-xs font-bold uppercase px-3 py-1 rounded-full bg-slate-900 border border-slate-700 text-indigo-400">Chapter</span>
+          <span id="difficultyBadge" class="text-xs font-bold uppercase px-3 py-1 rounded-full">Difficulty</span>
+        </div>
+        <div class="text-xs text-slate-400 font-mono">
+          Slide <span id="currentSlideNum" class="text-slate-100 font-bold">1</span> of <span id="totalSlidesNum">10</span>
+        </div>
+      </div>
+
+      <!-- Live Slide Progress bar -->
+      <div class="w-full bg-slate-900 h-1.5 rounded-full mt-4 overflow-hidden">
+        <div id="slideProgressBar" class="bg-gradient-to-r from-indigo-500 to-purple-500 h-full w-0 transition-all duration-300"></div>
+      </div>
+
+      <!-- Question Box -->
+      <div class="my-6">
+        <h3 id="questionText" class="text-lg md:text-xl font-semibold leading-relaxed text-slate-100">
+          Loading question text...
+        </h3>
+      </div>
+
+      <!-- Multiple Choice options grid -->
+      <div id="optionsContainer" class="space-y-3">
+        <!-- Dynamic Option Cards generated via JS -->
+      </div>
+
+      <!-- Legal Rationale Reveal Frame -->
+      <div id="rationaleContainer" class="hidden mt-6 bg-slate-900 border border-slate-800 rounded-xl p-4 transition-all duration-300">
+        <div class="flex items-start space-x-3">
+          <div class="bg-indigo-950 text-indigo-400 p-2 rounded-lg mt-0.5">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold uppercase tracking-wider text-indigo-400">Legal Rationale & Case Authority</h4>
+            <p id="rationaleText" class="text-sm text-slate-300 mt-1 leading-relaxed">
+              Legal explanation...
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide Nav controls -->
+      <div class="mt-8 pt-4 border-t border-slate-800 flex items-center justify-between">
+        <button onclick="quitQuiz()" class="text-xs text-slate-500 hover:text-slate-300 uppercase tracking-widest font-bold flex items-center gap-1">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          Exit Slide Deck
+        </button>
+        <button id="nextBtn" onclick="nextSlide()" class="disabled:opacity-40 disabled:cursor-not-allowed bg-indigo-600 hover:bg-indigo-700 text-white font-semibold px-6 py-2.5 rounded-lg text-sm flex items-center gap-2 transition-all" disabled>
+          <span id="nextBtnText">Next Slide</span>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- Detailed Results & Revision Analytics Dashboard -->
+    <section id="resultsSlide" class="hidden w-full max-w-5xl bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl p-6 md:p-8 transition-all duration-500 transform translate-y-4 opacity-0">
+      
+      <!-- Summary header -->
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center pb-6 border-b border-slate-800 gap-4">
+        <div>
+          <span class="text-xs font-semibold text-emerald-400 bg-emerald-950 border border-emerald-900 px-3 py-1 rounded-full uppercase tracking-widest">Deck Completed</span>
+          <h2 class="text-2xl md:text-3xl font-black mt-2">Analysis Dashboard</h2>
+        </div>
+        <div class="flex gap-2 w-full md:w-auto">
+          <button onclick="restartQuiz()" class="w-full md:w-auto bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-200 px-5 py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2">
+            Retry study set
+          </button>
+          <button onclick="quitQuiz()" class="w-full md:w-auto bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-lg text-sm font-semibold transition-all flex items-center justify-center gap-2">
+            Main Menu
+          </button>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 my-6">
+        
+        <!-- Interactive Circle Progress Chart -->
+        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-6 flex flex-col items-center justify-center">
+          <div class="relative w-36 h-36 flex items-center justify-center">
+            <svg class="w-full h-full transform -rotate-90">
+              <circle cx="72" cy="72" r="60" stroke-width="8" stroke="#1e293b" fill="transparent"/>
+              <circle id="progressCircle" cx="72" cy="72" r="60" stroke-width="8" stroke="#4f46e5" fill="transparent" stroke-dasharray="377" stroke-dashoffset="377" class="transition-all duration-1000 ease-out"/>
+            </svg>
+            <div class="absolute flex flex-col items-center">
+              <span id="percentageText" class="text-3xl font-black">0%</span>
+              <span id="scoreFraction" class="text-xs text-slate-400 mt-1">0/0 Slides</span>
+            </div>
+          </div>
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-400 mt-4">Total Correct</span>
+        </div>
+
+        <!-- Topic Breakdown Chart -->
+        <div class="bg-slate-900/60 border border-slate-800 rounded-xl p-6 col-span-1 md:col-span-2">
+          <h3 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-4">Metric Score Card</h3>
+          <div id="topicScoresContainer" class="space-y-4">
+            <!-- Dynamic categories loading here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Question Review Accordion -->
+      <div>
+        <h3 class="text-lg font-bold mb-4 flex items-center gap-2 text-slate-200">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+            <polyline points="14 2 14 8 20 8"></polyline>
+            <line x1="16" y1="13" x2="8" y2="13"></line>
+            <line x1="16" y1="17" x2="8" y2="17"></line>
+            <polyline points="10 9 9 9 8 9"></polyline>
+          </svg>
+          Slide Deck Audit List
+        </h3>
+        <div id="reviewContainer" class="space-y-3 max-h-72 overflow-y-auto custom-scrollbar border border-slate-800 bg-slate-900/40 rounded-xl p-3">
+          <!-- Accordion rows compiled on finished states -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer status bar -->
+  <footer class="border-t border-slate-800 bg-slate-950 px-6 py-3 flex flex-col md:flex-row items-center justify-between text-xs text-slate-500 z-10 gap-2">
+    <div>
+      Developed for interactive revision packs &middot; <span class="text-indigo-400 font-medium">Contracts Act 1950 (CA 1950)</span> and English Common Law guidelines.
+    </div>
+    <div class="flex items-center space-x-4">
+      <a href="#" class="hover:text-slate-300 transition-colors">Study Resources</a>
+      <span>&bull;</span>
+      <a href="#" class="hover:text-slate-300 transition-colors">Documentation</a>
+    </div>
+  </footer>
+
+  <!-- Master Database JS Compilation -->
+  <script>
+    // System-wide Question database (Extracted systematically from standard MCQs)
+    const masterQuestions = [
+      {
+        chapter: "Offer",
+        difficulty: "Medium",
+        question: "Darma posts a notice in a local post office stating: 'Reward. Lost Cavalier King Charles Spaniel named Bamby. RM15,000 reward for his safe return.' Flower finds Bamby. Unaware of Darma's reward notice, she returns Bamby to Darma because his address is on the dog's collar tag. What is the legal position?",
+        options: [
+          "Flower is entitled to the reward as her acceptance can be inferred from her act of returning the dog.",
+          "Flower is not entitled to the reward because the offer was invalid as it was not made to an identifiable class of persons.",
+          "Flower is not entitled to the reward. She failed to claim the reward at the time of returning Bamby and therefore waived her right.",
+          "Flower is not entitled to the reward as she did not even know that a reward was being offered."
+        ],
+        correctIndex: 3,
+        rationale: "Under common law and Section 4 of the Contracts Act 1950, a person cannot accept an offer (such as a unilateral reward offer) if they have no knowledge of its existence."
+      },
+      {
+        chapter: "Offer",
+        difficulty: "Easy",
+        question: "Mati goes shopping in her local village store. Roses are on display in a bucket priced at RM2 each. Mati has RM6 and takes three roses to the counter to pay. Does the display of priced roses constitute an offer which Mati accepts when she picks them up?",
+        options: [
+          "Yes, because clearly priced products on retail shelves constitute an absolute offer of sale.",
+          "No, the display is merely an invitation to treat; Mati makes the offer when she presents them to the counter."
+        ],
+        correctIndex: 1,
+        rationale: "A shop window or display shelf with priced tags is only an invitation to treat (*Fisher v Bell*). The customer makes the offer at the checkout counter."
+      },
+      {
+        chapter: "Offer",
+        difficulty: "Medium",
+        question: "In standard retail displays, can a shopkeeper legally refuse to sell an item to a customer when the customer presents it at the checkout counter to pay?",
+        options: [
+          "No, because the display of goods in a shop constitutes an absolute unilateral contract upon selection.",
+          "Yes, because the display is an invitation to treat; the shopkeeper has the right to refuse the customer's checkout offer."
+        ],
+        correctIndex: 1,
+        rationale: "Because retail shelf displays are invitations to treat, the shopkeeper is free to accept or reject the offer of purchase made by the consumer (*Pharmaceutical Society of Great Britain v Boots*)."
+      },
+      {
+        chapter: "Offer",
+        difficulty: "Easy",
+        question: "A local newspaper, The Malay Mail, publishes an advertisement stating: '50 Stereo headphones remaining; only RM20 each.' Which legal term best describes this newspaper advertisement?",
+        options: [
+          "Offer",
+          "Statement of intention",
+          "Invitation to treat",
+          "Supply of information"
+        ],
+        correctIndex: 2,
+        rationale: "Newspaper advertisements displaying inventory lists or catalog items are classified as invitations to treat, not binding legal offers."
+      },
+      {
+        chapter: "Offer",
+        difficulty: "Hard",
+        question: "Under the Contracts Act 1950, Abang sends a letter to Baby offering to sell his house at a certain price. When is the communication of this proposal complete as against Abang?",
+        options: [
+          "When Baby receives the letter.",
+          "When Baby accepts the letter.",
+          "When Abang drops the letter in the post box.",
+          "When Abang receives Baby's reply."
+        ],
+        correctIndex: 0,
+        rationale: "According to Section 4(1) of the Contracts Act 1950, the communication of a proposal is complete when it comes to the knowledge of the person to whom it is made (when Baby receives the letter)."
+      },
+      {
+        chapter: "Offer",
+        difficulty: "Medium",
+        question: "Which of the following elements is strictly **NOT** required to be present in order to create a valid contract for the sale of goods (not made by deed) under standard contract rules?",
+        options: [
+          "Consideration",
+          "Written evidence of the principal terms of the contract",
+          "An intention to create legal relations",
+          "Agreement"
+        ],
+        correctIndex: 1,
+        rationale: "Contracts for the sale of goods do not strictly require written evidence under standard rules; they can be finalized orally, via conduct, or a mixture of both."
+      },
+      {
+        chapter: "Termination of Offers",
+        difficulty: "Easy",
+        question: "Matthew offers to buy Tom's trailer tent for RM850. Tom replies that he is keen to sell but that he 'will not accept anything less than RM900 in any circumstances.' Which of the following best describes the status of Tom's reply?",
+        options: [
+          "It is a counter-offer.",
+          "It is a request for information.",
+          "It is a revocation of the offer.",
+          "It is an acceptance."
+        ],
+        correctIndex: 0,
+        rationale: "Tom's insistence on a different price (RM900 instead of RM850) is a counter-offer, which rejects and extinguishes Matthew's original offer."
+      },
+      {
+        chapter: "Termination of Offers",
+        difficulty: "Medium",
+        question: "Noel offered to sell Tamsin his caravan for RM500. Tamsin wrote to Noel saying she would buy it for RM400. Hearing nothing further from Noel, she telephoned him two days later and said she would pay the full RM500 after all. In the meantime, Noel sold it to Gail. Is Noel in breach of contract with Tamsin?",
+        options: [
+          "Yes, because Tamsin accepted the original offer of RM500 while it was still open.",
+          "No, because Tamsin's offer of RM400 was a counter-offer that rejected and destroyed Noel's original RM500 offer."
+        ],
+        correctIndex: 1,
+        rationale: "Tamsin's counter-offer of RM400 destroyed the original offer of RM500. Her subsequent telephone call was a fresh offer that Noel was under no obligation to accept."
+      },
+      {
+        chapter: "Termination of Offers",
+        difficulty: "Medium",
+        question: "Nigel offered to buy a puppy from Dorothy for RM600 shortly before a litter was born. Dorothy did not reply. Nine months later, Dorothy wrote to Nigel accepting his offer and advising him to collect the puppy. Which of the following best describes the legal position?",
+        options: [
+          "There is a valid contract and Dorothy is entitled to payment.",
+          "There is an implied revocation because Nigel did not follow up.",
+          "The offer has terminated through the lapse of a reasonable time and is no longer capable of acceptance.",
+          "There is an implied rejection because Nigel did not send a deposit."
+        ],
+        correctIndex: 2,
+        rationale: "Under standard principles and Section 6(b) of the Contracts Act 1950, an offer lapses if it is not accepted within a reasonable time. Nine months is unreasonable for a dog sale."
+      },
+      {
+        chapter: "Termination of Offers",
+        difficulty: "Hard",
+        question: "Under Malaysian and common law, is a revocation of an offer sent by post effective from the moment it is posted?",
+        options: [
+          "Yes, because the postal rule applies to both acceptance and revocation.",
+          "No, a revocation sent by letter is only effective when it is actually received by the offeree."
+        ],
+        correctIndex: 1,
+        rationale: "The postal rule only applies to acceptances. Revocations must be actively received by the offeree before they are effective (*Byrne v Van Tienhoven*)."
+      },
+      {
+        chapter: "Termination of Offers",
+        difficulty: "Medium",
+        question: "On Monday, George offers to sell his piano to Shau for RM15,000, to be delivered on Thursday. On Tuesday, Shau replies asking: 'Will you allow me to delay delivery until the following Monday?' George does not reply and sells the piano to Ivy on Thursday. On Friday, Shau learns of the sale and attempts to accept George's original offer. Is there a binding contract between George and Shau?",
+        options: [
+          "Yes, because Shau's reply on Tuesday was merely a request for information, leaving the original offer open to be accepted on Friday.",
+          "No, Shau's reply on Tuesday constitutes a counter-offer which destroyed the original offer.",
+          "No, the offer was terminated when George sold the piano to Ivy on Thursday.",
+          "Yes, Shau's reply on Tuesday constitutes a constructive acceptance."
+        ],
+        correctIndex: 0,
+        rationale: "An inquiry or request for information regarding delivery variations does not constitute a counter-offer (*Stevenson v McLean*). George's offer remained open and Shau accepted it."
+      },
+      {
+        chapter: "Termination of Offers",
+        difficulty: "Hard",
+        question: "The claimant offered to sell tools to the defendant, enclosing details of their standard terms. The defendant replied 'accepting' the offer, but enclosed their own standard terms. The claimant acknowledged this by returning a tear-off acknowledgement slip from the defendant's order form. Which of the following is correct?",
+        options: [
+          "The defendant's response was a counter-offer, which the claimant accepted by returning the tear-off slip, meaning the contract is on the defendant's terms.",
+          "The defendant's order was an offer which is binding on standard claimant terms.",
+          "The defendant's order was a counter-offer which is not recognized by law.",
+          "The defendant's order was a binding acceptance on the claimant's terms."
+        ],
+        correctIndex: 0,
+        rationale: "This is a classic 'battle of the forms' case (*Butler Machine Tool v Ex-Cell-O*). The return of the slip was an acceptance of the counter-offer, concluding the contract on the buyer's terms."
+      },
+      {
+        chapter: "Acceptance",
+        difficulty: "Medium",
+        question: "Brian writes to Amber offering to buy her tandem bicycle for RM100 and says: 'If I don't hear from you, I'll consider the tandem mine.' Amber intends to accept, but never gets around to replying. Which of the following is correct?",
+        options: [
+          "There is a contract because Amber's failure to reject the offer is deemed to be an implied acceptance.",
+          "There is no contract because silence cannot be imposed as a method of acceptance.",
+          "There is a contract because Amber had mental intent to accept.",
+          "There is no contract because Brian did not provide physical consideration first."
+        ],
+        correctIndex: 1,
+        rationale: "An offeror cannot stipulate that silence will constitute acceptance. Some positive action or communication is required from the offeree (*Felthouse v Bindley*)."
+      },
+      {
+        chapter: "Acceptance",
+        difficulty: "Hard",
+        question: "On 10 April, Lucy offered to sell her flute to Harriet for RM300. Harriet proposed RM275. Lucy rejected this but said she would accept RM285, stating that Harriet must let her know 'in writing' by Friday lunchtime (14 April) if she agreed, as she wanted to sell it at an orchestra rehearsal on Friday evening if Harriet declined. Harriet posted an acceptance letter at 7 AM on Friday, which did not arrive until Saturday. Lucy sold the flute to Alice on Friday evening. Is Lucy in breach of contract with Harriet?",
+        options: [
+          "Yes, because the postal rule applies, and a contract was formed at 7 AM on Friday when Harriet posted her letter.",
+          "No, because the postal rule was ousted by Lucy's requirement for notice 'in writing' by Friday lunchtime, and the acceptance was not received in time."
+        ],
+        correctIndex: 1,
+        rationale: "By stating that Harriet must 'let her know in writing' by a specific time, Lucy ousted the default operation of the postal rule. Actual receipt was required (*Holwell Securities v Hughes*)."
+      },
+      {
+        chapter: "Acceptance",
+        difficulty: "Medium",
+        question: "Gemma offered to sell Karina her saxophone for RM340. Gemma stated that because she was staying overnight at her mother's house, Karina must leave a voice message on her mother's answering machine that evening to accept. Karina could not find the mother's phone number, so she sent a text message to Gemma's mobile instead. Gemma had lost her mobile phone and never received the text. Gemma's mother sold the saxophone to someone else. Is there a valid contract between Gemma and Karina?",
+        options: [
+          "There is a valid contract because Karina's acceptance was communicated as expeditiously as the method prescribed.",
+          "No, because Gemma prescribed a specific, exclusive method of acceptance and Karina's failure to comply meant her acceptance was ineffective.",
+          "There is a valid contract because it was reasonable for Karina to suppose Gemma had her mobile.",
+          "There is a valid contract because Gemma's communication requirements were unreasonable."
+        ],
+        correctIndex: 1,
+        rationale: "When an offeror prescribes a very specific and exclusive method of acceptance, any alternative method used is ineffective unless it actually comes to the notice of the offeror."
+      },
+      {
+        chapter: "Acceptance",
+        difficulty: "Hard",
+        question: "A vendor agreed to sell a mushroom farm under a written agreement which was declared to be 'subject to contract.' Is there a binding contract between the parties?",
+        options: [
+          "Yes, because the parties had reduced their terms to a clear written agreement.",
+          "No, because the phrase 'subject to contract' indicates that the parties do not intend to be bound until a formal contract is executed.",
+          "Maybe, depending on whether a deposit has been paid.",
+          "Yes, because agreements on commercial properties are automatically binding."
+        ],
+        correctIndex: 1,
+        rationale: "The words 'subject to contract' create a strong presumption that the transaction remains in negotiation and is not binding until formal contract execution."
+      },
+      {
+        chapter: "Intention to Create Legal Relations",
+        difficulty: "Medium",
+        question: "An employment contract between Boss Products Sdn Bhd and its employee, Hans, provides for Hans to receive 'ex gratia' payments if the company receives additional business due to Hans' efforts. The company refuses to pay on several occasions. Does the 'ex gratia' label prevent the court from finding an intention to create legal relations?",
+        options: [
+          "Yes, because the label 'ex gratia' automatically establishes that no legal intent exists.",
+          "No, because in commercial agreements, there is a strong presumption of legal intent, and the term 'ex gratia' is insufficient to rebut it."
+        ],
+        correctIndex: 1,
+        rationale: "In commercial contexts, the burden of proving a lack of legal intent is extremely heavy. The term 'ex gratia' is generally insufficient to displace this presumption (*Edwards v Skyways*)."
+      },
+      {
+        chapter: "Intention to Create Legal Relations",
+        difficulty: "Easy",
+        question: "Determine whether the following statements are True or False:\n(1) There is a rebuttable presumption that social, domestic, and family arrangements are not intended to be legally binding.\n(2) There is an irrebuttable presumption that parties to a commercial agreement intend to create legal relations.",
+        options: [
+          "(1) True; (2) True",
+          "(1) False; (2) True",
+          "(1) True; (2) False",
+          "(1) False; (2) False"
+        ],
+        correctIndex: 2,
+        rationale: "Statement (1) is true. Statement (2) is false because commercial intent can be rebutted using explicit 'honour clauses' (*Rose & Frank Co*)."
+      },
+      {
+        chapter: "Intention to Create Legal Relations",
+        difficulty: "Medium",
+        question: "Mr. and Mrs. Gupta let flats to students. When their son, Shah Rukh Khan, studies law at UKM, they sign a written contract allowing him to reside in one flat for a reduced rent of RM200/month, and to sublet the second room for RM400/month. Does the necessary intention to create legal relations exist?",
+        options: [
+          "No, because it is a family or domestic arrangement and so no such intention is presumed.",
+          "No, because the fact that he pays a reduced rent is evidence of no legal intent.",
+          "Yes, because the presumption against legal relations in family settings is rebutted by the written agreement and the commercial nature of the rent payments.",
+          "Yes, because the presumption against legal intent does not apply to university students."
+        ],
+        correctIndex: 2,
+        rationale: "The domestic presumption is successfully rebutted when family arrangements are structured formally, reduced to writing, and involve commercial actions like rent payments (*Errington v Errington*)."
+      },
+      {
+        chapter: "Intention to Create Legal Relations",
+        difficulty: "Hard",
+        question: "A husband moved out of the matrimonial home. He later met his wife and signed a note promising to pay her RM500 per month, from which she agreed to pay the outstanding mortgage, and promised to transfer the house to her once the mortgage was paid off. The wife paid it off, but the husband refused to transfer the house. Is the agreement enforceable?",
+        options: [
+          "Yes, because the presumption against legal relations does not apply when a married couple is separated or about to separate, as they bargain at arm's length.",
+          "No, because the agreement was made between a husband and wife, meaning it remains domestic.",
+          "Yes, but only if they register the signed note with the land office.",
+          "No, because the wife did not provide any consideration from her own personal funds."
+        ],
+        correctIndex: 0,
+        rationale: "When married couples are in the process of separating, they do not bargain in amity; they bargain at arm's length, which rebuts the domestic presumption (*Merritt v Merritt*)."
+      },
+      {
+        chapter: "Intention to Create Legal Relations",
+        difficulty: "Hard",
+        question: "A husband promised his cohabiting wife that he would pay her RM1,000 in monthly allowances for her maintenance while he was away on a work transfer. The wife remained behind due to poor health. The husband defaulted on the payments, and the wife sued him. Will the wife succeed?",
+        options: [
+          "Yes, because a promise made to a wife is supported by natural love and affection, which is always binding.",
+          "No, because there is a rebuttable presumption that domestic arrangements between happily married, cohabiting couples lack an intention to create legal relations.",
+          "Yes, because her poor health acts as fresh consideration.",
+          "No, because the promise was not executed under a corporate seal."
+        ],
+        correctIndex: 1,
+        rationale: "Agreements made between happily married, cohabiting couples are presumed to lack any legal intention to sue (*Balfour v Balfour*)."
+      },
+      {
+        chapter: "Consideration",
+        difficulty: "Easy",
+        question: "In contract law, what is the key difference between the 'adequacy' of consideration and the 'sufficiency' of consideration?",
+        options: [
+          "Consideration must be adequate (match the actual market value) but need not be sufficient.",
+          "Consideration must be sufficient (have some value in the eyes of the law) but need not be adequate.",
+          "Consideration must be both adequate and sufficient.",
+          "Consideration need be neither sufficient nor adequate."
+        ],
+        correctIndex: 1,
+        rationale: "Sufficiency means the consideration has some value recognized in law (e.g., RM1, a chocolate wrapper). Adequacy concerns whether it is a fair price, which courts do not measure."
+      },
+      {
+        chapter: "Consideration",
+        difficulty: "Medium",
+        question: "David owed Michael RM1,000. Zak, a third party, offered to pay Michael RM900 on the condition that Michael released David from the entire debt. Michael accepted and cashed Zak's payment, but later sued David for the remaining RM100. Will Michael succeed?",
+        options: [
+          "Yes, because David did not provide any consideration himself.",
+          "No, because a part-payment of a debt by a third party, accepted by the creditor in full satisfaction, extinguishes the creditor's claim against the debtor.",
+          "Yes, because RM900 is less than the RM1,000 owed.",
+          "No, because debt settlement with checks is always binding under Section 64."
+        ],
+        correctIndex: 1,
+        rationale: "Part-payment of a debt by a third party, once accepted by the creditor, fully extinguishes the balance. The creditor cannot sue the debtor (*Welby v Drake*)."
+      },
+      {
+        chapter: "Consideration",
+        difficulty: "Hard",
+        question: "The claimant married G's daughter. On the occasion of the marriage, the claimant's father and G exchanged promises that they would each pay a sum of money to the claimant. G died without paying, and the claimant sued G's executors. Can the claimant bring a successful action against the estate under common law?",
+        options: [
+          "Yes, because the agreement was made specifically for the benefit of the claimant.",
+          "No, because the claimant was not a party to the contract between his father and G, and provided no consideration for G's promise.",
+          "Yes, because natural love and affection automatically grants third-party standing.",
+          "No, because contracts of family marriages are exempt from consideration."
+        ],
+        correctIndex: 1,
+        rationale: "Under the common law doctrine of privity, only those who are parties to a contract and have provided consideration can sue on it (*Tweddle v Atkinson*)."
+      },
+      {
+        chapter: "Consideration",
+        difficulty: "Hard",
+        question: "Under Malaysian law, specifically Section 26 of the Contracts Act 1950, which of the following is **NOT** an exception to the general rule that an agreement without consideration is void?",
+        options: [
+          "It is a promise made in writing and registered, based on natural love and affection between near relations.",
+          "It is a promise to compensate, wholly or in part, a person who has already voluntarily done something for the promisor.",
+          "It is a promise to pay a debt barred by limitation law made in writing and signed.",
+          "It is a promise to compensate a party for a future duty that has not yet been attempted."
+        ],
+        correctIndex: 3,
+        rationale: "Section 26 lists three exceptions: natural love/affection between near relations, past voluntary acts, and written promises to pay statute-barred debts. Future duties are not excepted."
+      },
+      {
+        chapter: "Consideration",
+        difficulty: "Medium",
+        question: "Muthu, aged 19, agreed to give his electronic calculator (worth RM500) to his best friend, Alice. In return, Alice agreed to give Muthu her favorite storybook, which she had purchased for RM10 five years ago. Muthu later tries to cancel the agreement, claiming the consideration was inadequate. What is the legal position?",
+        options: [
+          "The contract is valid; adequacy of consideration is irrelevant under Section 26 (Explanation 2) of the Contracts Act 1950, as long as consent was freely given.",
+          "The contract is void due to extreme inequality in consideration value.",
+          "The contract is voidable at Muthu's sole option.",
+          "The contract is void because the book was purchased five years ago (past consideration)."
+        ],
+        correctIndex: 0,
+        rationale: "Explanation 2 to Section 26 of the Contracts Act 1950 explicitly states that an agreement to which the consent of the promisor is freely given is not void merely because the consideration is inadequate."
+      },
+      {
+        chapter: "Capacity",
+        difficulty: "Medium",
+        question: "Palu, aged 16, executed transfers of his land in favor of the defendant, and the transfers were witnessed and registered. Palu (by his next friend) later applied to the court to set aside the transfers. Will Palu succeed?",
+        options: [
+          "No, because registered land transactions cannot be set aside.",
+          "Yes, because contracts entered into by a minor are void under Malaysian law, and the transfers must be set aside.",
+          "No, because Palu was over puberty and had capacity.",
+          "Yes, but only if he pays compensation to the defendant."
+        ],
+        correctIndex: 1,
+        rationale: "Unlike English common law where minors' contracts are voidable, in Malaysia, contracts entered into by minors are generally void (*Mohori Bibee v Dharmodas Ghose* and *Tan Hee Juan v Teh Boon Keat*)."
+      },
+      {
+        chapter: "Capacity",
+        difficulty: "Easy",
+        question: "Determine whether the following statements are True or False:\n(1) A minor is a person who has not reached the age of 21 under the Age of Majority Act 1971.\n(2) The general rule in Malaysia is that all contracts entered into by a minor are voidable.",
+        options: [
+          "(1) True; (2) True",
+          "(1) False; (2) False",
+          "(1) True; (2) False",
+          "(1) False; (2) True"
+        ],
+        correctIndex: 1,
+        rationale: "Statement (1) is false because the Age of Majority Act 1971 sets the age of majority at 18. Statement (2) is false because minors' contracts are void, not voidable."
+      },
+      {
+        chapter: "Capacity",
+        difficulty: "Medium",
+        question: "An undergraduate student of the University of Malaya ordered a tailor to make 10 pairs of luxury three-piece suits. The tailor delivered the suits. The student's father provided evidence that his son was already adequately stocked with clothes of a similar nature. Will the three-piece suits be deemed 'necessaries' for the minor?",
+        options: [
+          "Yes, because university students need luxury suits to maintain their station in life.",
+          "No, because the student was already adequately supplied with similar clothes, meaning the extra suits are not 'necessaries' in law."
+        ],
+        correctIndex: 1,
+        rationale: "To qualify as 'necessaries', the goods must not only be suitable to the minor's station in life, but they must also be actually required at the time of delivery (*Nash v Inman*)."
+      },
+      {
+        chapter: "Capacity",
+        difficulty: "Hard",
+        question: "The Age of Majority Act 1971 and other Malaysian statutes have created several exceptions to the general rule that contracts with minors are void. Which of the following areas are recognized as exceptions in Malaysia?",
+        options: [
+          "Marriage contracts, Scholarship contracts, and Contracts of Insurance.",
+          "Real estate purchases, High-stakes commercial partnerships, and Marriage contracts.",
+          "Contracts of Insurance and high-stakes loan guarantees.",
+          "All minor agreements are exceptions if they are executed in writing."
+        ],
+        correctIndex: 0,
+        rationale: "In Malaysia, exceptions allowing minors to contract include contracts of marriage, scholarship agreements (Contracts Amendment Act 1976), and insurance policies (for minors over 10)."
+      },
+      {
+        chapter: "Capacity",
+        difficulty: "Hard",
+        question: "Under Malaysian law, what is the legal effect of a contract entered into by a person who is of unsound mind, if the other party was aware of their mental state?",
+        options: [
+          "The contract is valid and binding.",
+          "The contract is voidable at the option of the person of unsound mind.",
+          "The contract is void.",
+          "The contract is illegal."
+        ],
+        correctIndex: 1,
+        rationale: "Unlike minor agreements which are void, contracts entered into by a person of unsound mind (where the other party knows of the disability) are voidable at the option of the disabled party."
+      }
+    ];
+
+    // Core application states
+    let currentFilteredQuestions = [];
+    let currentSlideIndex = 0;
+    let selectedOptionIdx = null;
+    let quizScore = 0;
+    let answersLog = [];
+    let soundEnabled = true;
+
+    // Web Audio Synthesizer (Chime Effects)
+    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    
+    function playBeep(isCorrect) {
+      if (!soundEnabled) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gainNode = audioCtx.createGain();
+        osc.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        if (isCorrect) {
+          // Success Chime (Two ascending notes)
+          osc.type = "sine";
+          osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+          osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1); // E5
+          gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.35);
+        } else {
+          // Error buzzer (Single low buzzing note)
+          osc.type = "sawtooth";
+          osc.frequency.setValueAtTime(150, audioCtx.currentTime); 
+          gainNode.gain.setValueAtTime(0.12, audioCtx.currentTime);
+          gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.3);
+        }
+      } catch (err) {
+        console.warn("Audio Context block or error:", err);
+      }
+    }
+
+    function toggleAudio() {
+      soundEnabled = !soundEnabled;
+      const icon = document.getElementById("audioIcon");
+      if (soundEnabled) {
+        icon.innerHTML = `<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>`;
+        document.getElementById("audioBtn").classList.remove("opacity-50");
+      } else {
+        icon.innerHTML = `<polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line>`;
+        document.getElementById("audioBtn").classList.add("opacity-50");
+      }
+    }
+
+    // Load initial selection grid
+    window.onload = function() {
+      // Collect unique chapters
+      const chapters = ["All Modules", ...new Set(masterQuestions.map(q => q.chapter))];
+      const grid = document.getElementById("chapterSelectorGrid");
+      grid.innerHTML = "";
+      
+      chapters.forEach((ch, idx) => {
+        const btn = document.createElement("button");
+        btn.onclick = () => selectChapter(ch, btn);
+        btn.className = `p-4 rounded-xl text-left border transition-all ${
+          idx === 0 
+          ? "bg-indigo-950/40 border-indigo-500 text-indigo-300 ring-2 ring-indigo-500/20" 
+          : "bg-slate-900/60 border-slate-800 hover:border-slate-700 text-slate-300"
+        }`;
+        btn.setAttribute("data-chapter", ch);
+        
+        // Count questions in this chapter
+        const count = ch === "All Modules" ? masterQuestions.length : masterQuestions.filter(q => q.chapter === ch).length;
+        
+        btn.innerHTML = `
+          <h4 class="font-semibold text-sm">${ch}</h4>
+          <span class="text-xs text-slate-500 block mt-1">${count} Questions</span>
+        `;
+        grid.appendChild(btn);
+      });
+
+      // Set initial selected chapter state
+      window.selectedChapter = "All Modules";
+    };
+
+    function selectChapter(chapter, element) {
+      window.selectedChapter = chapter;
+      // Reset active styles on sibling cards
+      const buttons = document.querySelectorAll("#chapterSelectorGrid button");
+      buttons.forEach(btn => {
+        btn.className = "p-4 rounded-xl text-left border transition-all bg-slate-900/60 border-slate-800 hover:border-slate-700 text-slate-300";
+      });
+      element.className = "p-4 rounded-xl text-left border transition-all bg-indigo-950/40 border-indigo-500 text-indigo-300 ring-2 ring-indigo-500/20";
+    }
+
+    // Launch practice set
+    function startQuiz() {
+      const chapter = window.selectedChapter || "All Modules";
+      if (chapter === "All Modules") {
+        currentFilteredQuestions = [...masterQuestions];
+      } else {
+        currentFilteredQuestions = masterQuestions.filter(q => q.chapter === chapter);
+      }
+
+      // Shuffle selected pool for diversity
+      currentFilteredQuestions.sort(() => Math.random() - 0.5);
+
+      // Reset markers
+      currentSlideIndex = 0;
+      quizScore = 0;
+      answersLog = [];
+      selectedOptionIdx = null;
+
+      // Show slide workspace
+      slideTransition("welcomeSlide", "quizSlide", () => {
+        document.getElementById("totalSlidesNum").innerText = currentFilteredQuestions.length;
+        renderSlide();
+      });
+    }
+
+    // Presentation transition effect
+    function slideTransition(fromId, toId, callback) {
+      const fromEl = document.getElementById(fromId);
+      const toEl = document.getElementById(toId);
+
+      fromEl.classList.add("opacity-0", "translate-y-4");
+      setTimeout(() => {
+        fromEl.classList.add("hidden");
+        toEl.classList.remove("hidden");
+        // Reflow browser layout trigger
+        toEl.offsetHeight; 
+        toEl.classList.remove("opacity-0", "translate-y-4");
+        if (callback) callback();
+      }, 300);
+    }
+
+    // Render single card slide content
+    function renderSlide() {
+      const question = currentFilteredQuestions[currentSlideIndex];
+      selectedOptionIdx = null;
+
+      // Update basic badges
+      document.getElementById("chapterBadge").innerText = question.chapter;
+      document.getElementById("difficultyBadge").innerText = question.difficulty;
+      
+      // Style Difficulty Badge
+      const diffEl = document.getElementById("difficultyBadge");
+      diffEl.className = "text-xs font-bold uppercase px-3 py-1 rounded-full border ";
+      if (question.difficulty === "Easy") {
+        diffEl.classList.add("bg-emerald-950", "border-emerald-900", "text-emerald-400");
+      } else if (question.difficulty === "Medium") {
+        diffEl.classList.add("bg-amber-950", "border-amber-900", "text-amber-400");
+      } else {
+        diffEl.classList.add("bg-rose-950", "border-rose-900", "text-rose-400");
+      }
+
+      // Slide sequence details
+      document.getElementById("currentSlideNum").innerText = currentSlideIndex + 1;
+      const progressPercent = ((currentSlideIndex) / currentFilteredQuestions.length) * 100;
+      document.getElementById("slideProgressBar").style.width = `${progressPercent}%`;
+
+      // Update Question text
+      document.getElementById("questionText").innerText = question.question;
+
+      // Render Options cards
+      const container = document.getElementById("optionsContainer");
+      container.innerHTML = "";
+
+      question.options.forEach((opt, idx) => {
+        const optCard = document.createElement("button");
+        optCard.onclick = () => selectOption(idx);
+        optCard.className = "w-full text-left p-4 rounded-xl border border-slate-800 bg-slate-900 hover:bg-slate-850 hover:border-slate-700 transition-all flex items-start space-x-3 group";
+        optCard.setAttribute("data-option-idx", idx);
+
+        optCard.innerHTML = `
+          <span class="w-6 h-6 shrink-0 rounded-lg bg-slate-800 border border-slate-700 text-xs font-bold flex items-center justify-center text-slate-400 group-hover:bg-slate-700 transition-colors">
+            ${String.fromCharCode(65 + idx)}
+          </span>
+          <span class="text-sm text-slate-300 font-medium pt-0.5 leading-relaxed">${opt}</span>
+        `;
+        container.appendChild(optCard);
+      });
+
+      // Hide Rationale panel and disable next buttons
+      document.getElementById("rationaleContainer").classList.add("hidden");
+      const nextBtn = document.getElementById("nextBtn");
+      nextBtn.disabled = true;
+      document.getElementById("nextBtnText").innerText = currentSlideIndex === currentFilteredQuestions.length - 1 ? "Finish Deck" : "Next Slide";
+    }
+
+    // User handles Option selection
+    function selectOption(index) {
+      if (selectedOptionIdx !== null) return; // Prevent double trigger
+      selectedOptionIdx = index;
+
+      const question = currentFilteredQuestions[currentSlideIndex];
+      const isCorrect = (index === question.correctIndex);
+
+      if (isCorrect) quizScore++;
+      playBeep(isCorrect);
+
+      // Record selection state
+      answersLog.push({
+        question: question.question,
+        chapter: question.chapter,
+        selectedText: question.options[index],
+        correctText: question.options[question.correctIndex],
+        isCorrect: isCorrect,
+        rationale: question.rationale
+      });
+
+      // Highlight Answer Cards
+      const optionCards = document.querySelectorAll("#optionsContainer button");
+      optionCards.forEach((card, idx) => {
+        const label = card.querySelector("span:first-child");
+        if (idx === question.correctIndex) {
+          // Highlight correct green
+          card.className = "w-full text-left p-4 rounded-xl border border-emerald-900 bg-emerald-950/20 transition-all flex items-start space-x-3 ring-2 ring-emerald-500/20";
+          label.className = "w-6 h-6 shrink-0 rounded-lg bg-emerald-600 text-white text-xs font-bold flex items-center justify-center";
+        } else if (idx === index) {
+          // Highlight incorrect red
+          card.className = "w-full text-left p-4 rounded-xl border border-rose-900 bg-rose-950/20 transition-all flex items-start space-x-3 ring-2 ring-rose-500/20";
+          label.className = "w-6 h-6 shrink-0 rounded-lg bg-rose-600 text-white text-xs font-bold flex items-center justify-center";
+        } else {
+          // Fade remaining options
+          card.className = "w-full text-left p-4 rounded-xl border border-slate-900 bg-slate-950 opacity-40 transition-all flex items-start space-x-3";
+        }
+      });
+
+      // Reveal Rationale panel
+      const rationalePanel = document.getElementById("rationaleContainer");
+      document.getElementById("rationaleText").innerText = question.rationale;
+      rationalePanel.classList.remove("hidden");
+
+      // Enable Next button
+      const nextBtn = document.getElementById("nextBtn");
+      nextBtn.disabled = false;
+    }
+
+    // Slide navigation trigger
+    function nextSlide() {
+      if (currentSlideIndex < currentFilteredQuestions.length - 1) {
+        currentSlideIndex++;
+        renderSlide();
+      } else {
+        // Show Score Slide
+        showSummary();
+      }
+    }
+
+    // Exit Practice Set
+    function quitQuiz() {
+      slideTransition("quizSlide", "welcomeSlide");
+      slideTransition("resultsSlide", "welcomeSlide");
+    }
+
+    // Build Results Dashboard
+    function showSummary() {
+      slideTransition("quizSlide", "resultsSlide", () => {
+        const total = currentFilteredQuestions.length;
+        const scorePct = Math.round((quizScore / total) * 100);
+
+        // Circular Chart animation
+        const circle = document.getElementById("progressCircle");
+        const radius = circle.r.baseVal.value;
+        const circumference = 2 * Math.PI * radius;
+        const offset = circumference - (scorePct / 100) * circumference;
+        
+        circle.style.strokeDasharray = circumference;
+        circle.style.strokeDashoffset = offset;
+
+        // Score highlights text
+        document.getElementById("percentageText").innerText = `${scorePct}%`;
+        document.getElementById("scoreFraction").innerText = `${quizScore} / ${total} Slides`;
+
+        // Style circular ring color dynamically
+        if (scorePct >= 75) {
+          circle.setAttribute("stroke", "#10b981"); // Emerald Green
+        } else if (scorePct >= 50) {
+          circle.setAttribute("stroke", "#f59e0b"); // Amber Orange
+        } else {
+          circle.setAttribute("stroke", "#ef4444"); // Red Fail
+        }
+
+        // Build metric score cards
+        buildMetricsBreakdown();
+
+        // Build audit list rows
+        buildAuditList();
+      });
+    }
+
+    // Analyze topic and module wise metrics
+    function buildMetricsBreakdown() {
+      const container = document.getElementById("topicScoresContainer");
+      container.innerHTML = "";
+
+      // Collect chapters present in current active selection pool
+      const uniqueChapters = [...new Set(currentFilteredQuestions.map(q => q.chapter))];
+
+      uniqueChapters.forEach(chapterName => {
+        const chapQuestions = answersLog.filter(log => log.chapter === chapterName);
+        const correctCount = chapQuestions.filter(log => log.isCorrect).length;
+        const pct = Math.round((correctCount / chapQuestions.length) * 100);
+
+        const row = document.createElement("div");
+        row.className = "space-y-1.5";
+        row.innerHTML = `
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-semibold text-slate-300">${chapterName}</span>
+            <span class="text-slate-400 font-mono">${correctCount}/${chapQuestions.length} (${pct}%)</span>
+          </div>
+          <div class="w-full bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-800">
+            <div class="h-full rounded-full ${
+              pct >= 75 ? 'bg-emerald-500' : pct >= 50 ? 'bg-amber-500' : 'bg-rose-500'
+            }" style="width: ${pct}%"></div>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+    }
+
+    // Build question analysis accordion list
+    function buildAuditList() {
+      const container = document.getElementById("reviewContainer");
+      container.innerHTML = "";
+
+      answersLog.forEach((log, idx) => {
+        const item = document.createElement("div");
+        item.className = "border border-slate-800 rounded-xl overflow-hidden bg-slate-950/40";
+        
+        item.innerHTML = `
+          <button onclick="toggleAccordion(this)" class="w-full text-left px-4 py-3 flex items-center justify-between hover:bg-slate-900/40 transition-colors">
+            <div class="flex items-center space-x-3 text-xs md:text-sm">
+              <span class="w-5 h-5 rounded-full flex items-center justify-center font-mono ${
+                log.isCorrect ? 'bg-emerald-950 text-emerald-400' : 'bg-rose-950 text-rose-400'
+              }">
+                ${log.isCorrect ? '✓' : '✗'}
+              </span>
+              <span class="font-bold text-slate-400 uppercase tracking-wider text-[10px] bg-slate-900 border border-slate-800 px-2.5 py-0.5 rounded">${log.chapter}</span>
+              <p class="font-medium truncate text-slate-300 max-w-xs md:max-w-md">${log.question}</p>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-slate-500 transform transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+          <div class="hidden px-4 pb-4 pt-2 border-t border-slate-800 bg-slate-950/60 text-xs md:text-sm space-y-3">
+            <div>
+              <h4 class="font-bold text-slate-400 mb-1">Scenario/Question</h4>
+              <p class="text-slate-300 leading-relaxed">${log.question}</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-1">
+              <div class="bg-rose-950/20 border border-rose-900/30 p-3 rounded-lg">
+                <span class="text-[10px] font-bold text-rose-400 uppercase tracking-widest block mb-1">Your selection</span>
+                <p class="text-slate-300 font-medium leading-relaxed">${log.selectedText}</p>
+              </div>
+              <div class="bg-emerald-950/20 border border-emerald-900/30 p-3 rounded-lg">
+                <span class="text-[10px] font-bold text-emerald-400 uppercase tracking-widest block mb-1">Correct Answer</span>
+                <p class="text-slate-300 font-medium leading-relaxed">${log.correctText}</p>
+              </div>
+            </div>
+            <div class="bg-slate-900 border border-slate-800 p-3.5 rounded-lg mt-2">
+              <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-widest block mb-1">Legal Precedent Rationale</span>
+              <p class="text-slate-300 leading-relaxed font-normal">${log.rationale}</p>
+            </div>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    // Toggle row expands in accordion list
+    function toggleAccordion(btn) {
+      const parent = btn.parentElement;
+      const content = parent.querySelector("div");
+      const icon = btn.querySelector("svg");
+
+      if (content.classList.contains("hidden")) {
+        content.classList.remove("hidden");
+        icon.classList.add("rotate-180");
+      } else {
+        content.classList.add("hidden");
+        icon.classList.remove("rotate-180");
+      }
+    }
+
+    // Restart exact current study set
+    function restartQuiz() {
+      currentSlideIndex = 0;
+      quizScore = 0;
+      answersLog = [];
+      selectedOptionIdx = null;
+
+      slideTransition("resultsSlide", "quizSlide", () => {
+        renderSlide();
+      });
+    }
+  </script>
+</body>
+</html>
